@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\Dr_JonesBugTracker.props" />
+</Project>

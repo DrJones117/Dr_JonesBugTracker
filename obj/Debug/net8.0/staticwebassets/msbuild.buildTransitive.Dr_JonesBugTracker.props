@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\Dr_JonesBugTracker.props" />
+</Project>
