@@ -10,6 +10,7 @@ public class User
 
     [Required]
     [EmailAddress]
+    [UniqueEmail]
     public required string Email {get; set;}
 
     [Required]
