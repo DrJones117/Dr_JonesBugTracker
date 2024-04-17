@@ -22,6 +22,13 @@ public class ProjectController : Controller
         _context = context;
     }
 
+    [HttpGet("projects/home")]
+    public IActionResult HomePage()
+    {
+        return View();
+    }
+
+    
 public class SessionCheckAttribute : ActionFilterAttribute
 {
     public override void OnActionExecuting(ActionExecutingContext context)

@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.AspNetCore.Identity;
 using System.Reflection.Metadata.Ecma335;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.VisualBasic;
 
 
 namespace Dr_JonesBugTracker.Controllers;
@@ -28,7 +29,8 @@ public class HomeController : Controller
         return View();
     }
 
-    [HttpPost("user/create")]
+
+    [HttpPost("users/create")]
     public IActionResult CreateUser(User newUser)
     {
         if (!ModelState.IsValid)
@@ -53,6 +55,38 @@ public class HomeController : Controller
 
             return RedirectToAction("HomePage", "Project");
         }
+    }
+
+    [HttpPost("users/login")]
+    public IActionResult LogIn(LoginUser user)
+    {   
+        if (ModelState.IsValid)
+        {
+            User? userInDb = _context.Users.FirstOrDefault(u => u.Email == user.LogEmail);
+
+            if (userInDb == null)
+            {
+                ModelState.AddModelError("LogEmail", "Invalid Email/Password");
+                return View("Index");
+            }
+
+            PasswordHasher<LoginUser> hasher = new(); 
+
+            var result = hasher.VerifyHashedPassword(user, userInDb.Password, user.LogPassword);
+
+            if (result == 0)
+            {
+                ModelState.AddModelError("LogPassword", "Invalid Email/Password");
+                return View("Index");
+            }
+            else
+            {
+                HttpContext.Session.SetInt32("UserId", userInDb.UserId);
+                return RedirectToAction("Dashboard", "Wedding");
+            }
+        }
+
+        return View("Index");
     }
 
 public class SessionCheckAttribute : ActionFilterAttribute
