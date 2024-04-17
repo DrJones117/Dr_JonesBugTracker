@@ -9,50 +9,17 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Dr_JonesBugTracker.Controllers;
 
-public class HomeController : Controller
+public class ProjectController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
+    private readonly ILogger<ProjectController> _logger;
 
     private MyContext _context;
 
-    public HomeController(ILogger<HomeController> logger, MyContext context)
+    public ProjectController(ILogger<ProjectController> logger, MyContext context)
     {
         _logger = logger;
 
         _context = context;
-    }
-
-    [HttpGet("")]
-    public IActionResult Index()
-    {
-        return View();
-    }
-
-    [HttpPost("user/create")]
-    public IActionResult CreateUser(User newUser)
-    {
-        if (!ModelState.IsValid)
-        {
-            var message = string.Join(" | ", ModelState.Values
-            .SelectMany(v => v.Errors)
-            .Select(e => e.ErrorMessage));
-            Console.WriteLine(message);
-
-            return View("Index");
-        }
-        else
-        {
-            PasswordHasher<User> Hasher = new();
-
-            newUser.Password = Hasher.HashPassword(newUser, newUser.Password);
-
-            HttpContext.Session.SetInt32("Userid", newUser.UserId);
-
-            _context.Add(newUser);
-            _context.SaveChanges();
-
-            return RedirectToAction("HomePage", "Project");
-        }
     }
 
 public class SessionCheckAttribute : ActionFilterAttribute

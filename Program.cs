@@ -1,30 +1,30 @@
-// Add this using statement
 using Microsoft.EntityFrameworkCore;
-// You will need access to your models for your context file
 using Dr_JonesBugTracker.Models;
-// Builder code from before
+
 var builder = WebApplication.CreateBuilder(args);
-// Create a variable to hold your connection string
+
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-// All your builder.services go here
-// And we will add one more service
-// Make sure this is BEFORE var app = builder.Build()!!
 builder.Services.AddDbContext<MyContext>(options =>
 {
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
-// The rest of the code below
 
-// Add services to the container.
+builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromSeconds(10);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -34,6 +34,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",
