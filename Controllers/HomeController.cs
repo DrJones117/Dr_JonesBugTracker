@@ -4,11 +4,11 @@ using Dr_JonesBugTracker.Models;
 
 namespace Dr_JonesBugTracker.Controllers;
 
-public class UserController : Controller
+public class HomeController : Controller
 {
-    private readonly ILogger<UserController> _logger;
+    private readonly ILogger<HomeController> _logger;
 
-    public UserController(ILogger<UserController> logger)
+    public HomeController(ILogger<HomeController> logger)
     {
         _logger = logger;
     }
