@@ -48,7 +48,7 @@ public class HomeController : Controller
 
             newUser.Password = Hasher.HashPassword(newUser, newUser.Password);
 
-            HttpContext.Session.SetInt32("Userid", newUser.UserId);
+            HttpContext.Session.SetInt32("UserId", newUser.UserId);
 
             _context.Add(newUser);
             _context.SaveChanges();
@@ -82,7 +82,7 @@ public class HomeController : Controller
             else
             {
                 HttpContext.Session.SetInt32("UserId", userInDb.UserId);
-                return RedirectToAction("Dashboard", "Wedding");
+                return RedirectToAction("HomePage", "Project");
             }
         }
 

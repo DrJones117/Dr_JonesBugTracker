@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Dr_JonesBugTracker.Controllers;
 
+[SessionCheck]
 public class ProjectController : Controller
 {
     private readonly ILogger<ProjectController> _logger;
@@ -28,7 +29,7 @@ public class ProjectController : Controller
         return View();
     }
 
-    
+
 public class SessionCheckAttribute : ActionFilterAttribute
 {
     public override void OnActionExecuting(ActionExecutingContext context)
