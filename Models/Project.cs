@@ -7,19 +7,20 @@ namespace Dr_JonesBugTracker.Models;
 public class Project
 {
     [Key]
-    public int ProjectId {get; set;}
+    public int ProjectId { get; set; }
 
     [Required]
     [MinLength(2)]
-    public required string Name {get; set;}
+    public string Name { get; set; }
 
     [Required]
     [MinLength(10)]
-    public required string Description {get; set;}
-    public DateTime CreatedAt {get;set;} = DateTime.Now;
-    public DateTime UpdatedAt {get;set;} = DateTime.Now;
-    public int UserId {get; set;}
+    public string Description { get; set; }
 
-    public User? Creator {get; set;}
-    public List<Bug> AllBugs {get; set;} = new List<Bug>();
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
+    public DateTime UpdatedAt { get; set; } = DateTime.Now;
+    public int UserId { get; set; }
+
+    public User? Creator { get; set; }
+    public List<Bug> AllBugs { get; set; } = new List<Bug>();
 }

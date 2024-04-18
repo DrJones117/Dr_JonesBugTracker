@@ -1,15 +1,13 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Dr_JonesBugTracker.Models;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.AspNetCore.Identity;
-using System.Reflection.Metadata.Ecma335;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 
 namespace Dr_JonesBugTracker.Controllers;
 
-[SessionCheck]
+// [SessionCheck]
 public class ProjectController : Controller
 {
     private readonly ILogger<ProjectController> _logger;
@@ -27,6 +25,36 @@ public class ProjectController : Controller
     public IActionResult HomePage()
     {
         return View();
+    }
+
+    [HttpGet("projects/dashboard")]
+    public IActionResult Dashboard()
+    {
+        return View("Dashboard");
+    }
+
+    [HttpPost("projects/create")]
+    public IActionResult CreateProject(Project newProject)
+    {
+        if (!ModelState.IsValid)
+        {
+            var message = string.Join(" | ", ModelState.Values
+            .SelectMany(v => v.Errors)
+            .Select(e => e.ErrorMessage));
+            Console.WriteLine(message);
+
+            ViewData["openForm"] = true;
+
+            return Dashboard();
+        }
+        else
+        {
+            newProject.UserId = (int)HttpContext.Session.GetInt32("UserId");
+            _context.Add(newProject);
+            _context.SaveChanges();
+
+            return RedirectToAction("Dashboard", new{projectId = newProject.ProjectId});
+        }
     }
 
 
